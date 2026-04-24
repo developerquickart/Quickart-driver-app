@@ -1,0 +1,1 @@
+/Users/niladriroy/Work/Flutter/Quickart/quickart_driver_app_2.0/build/app/intermediates/cxx/RelWithDebInfo/5n56n15r/obj/arm64-v8a

@@ -1,0 +1,2 @@
+alias: quickart
+password: quickart

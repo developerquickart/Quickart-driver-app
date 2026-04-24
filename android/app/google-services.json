@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "364780853495",
+    "project_id": "quickart-346512",
+    "storage_bucket": "quickart-346512.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364780853495:android:040e4ff954b07994491bf2",
+        "android_client_info": {
+          "package_name": "com.quickart.driver.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "364780853495-3oc91qo2jsbu9nirvsbkbagmq57u5vtp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALl3A8x9cqTzIB1JtDK9xvNyIKdjxTdT8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "364780853495-3oc91qo2jsbu9nirvsbkbagmq57u5vtp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "364780853495-2mpjcvn9g45qd7u11kujnbgflmoa9uoq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.quickart.driver.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

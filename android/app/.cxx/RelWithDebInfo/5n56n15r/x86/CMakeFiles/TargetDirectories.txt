@@ -1,0 +1,2 @@
+/Users/niladriroy/Work/Flutter/Quickart/quickart_driver_app_2.0/android/app/.cxx/RelWithDebInfo/5n56n15r/x86/CMakeFiles/edit_cache.dir
+/Users/niladriroy/Work/Flutter/Quickart/quickart_driver_app_2.0/android/app/.cxx/RelWithDebInfo/5n56n15r/x86/CMakeFiles/rebuild_cache.dir
