@@ -43,7 +43,7 @@ class _ZapTodayOrderState extends State<ZapTodayOrder> {
     super.initState();
     getCurrentLocation();
     getOrderList();
-    getOrderCancellationReasons();
+    // getOrderCancellationReasons();
   }
 
   //Get current location function
@@ -127,20 +127,20 @@ class _ZapTodayOrderState extends State<ZapTodayOrder> {
     });
   }
 
-  //Get order cancellation reasons
-  void getOrderCancellationReasons() async {
-    setState(() {});
-    var url = zapCancelitemlist;
-    var http = Client();
-    print(zapCancelitemlist);
-    http.get(url).then((value) {
-      print('getOrderCancellationReasons resp - ${value.body}');
-      if (value.statusCode == 200) {
-        CancellationReasons data1 =
-            CancellationReasons.fromJson(jsonDecode(value.body));
-      }
-    }).catchError((e) {});
-  }
+  // //Get order cancellation reasons
+  // void getOrderCancellationReasons() async {
+  //   setState(() {});
+  //   var url = zapCancelitemlist;
+  //   var http = Client();
+  //   print(zapCancelitemlist);
+  //   http.get(url).then((value) {
+  //     print('getOrderCancellationReasons resp - ${value.body}');
+  //     if (value.statusCode == 200) {
+  //       CancellationReasons data1 =
+  //           CancellationReasons.fromJson(jsonDecode(value.body));
+  //     }
+  //   }).catchError((e) {});
+  // }
 
   //Get order list API call
   void cancalledOrderItemList(String dUniqueID) async {
@@ -1126,7 +1126,7 @@ class _ZapTodayOrderState extends State<ZapTodayOrder> {
                       )
                     : SizedBox.shrink(),
                 SizedBox(height: 8),
-                (mainP.items != null && mainP.items!.length > 0)
+                (mainP.items != null && mainP.items!.length > 0 && mainP.timeSlot != null)
                     ? Row(
                         children: [
                           Text("Delivery Time Slot: ",

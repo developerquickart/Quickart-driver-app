@@ -44,17 +44,34 @@ Future<void> main() async {
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   try {
     await Firebase.initializeApp();
+    NotificationSettings settings =
+        await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    print("AUTH STATUS => ${settings.authorizationStatus}");
+
+    print("Permission: ${settings.authorizationStatus}");
   } catch (e) {
     print(e);
   }
 
-  FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-      alert: true, badge: true, sound: true);
+  // FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+  //     alert: true, badge: true, sound: true);
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   hitAppInfo();
-
-  HttpOverrides.global = new MyHttpOverrides();
 
   HttpOverrides.global = new MyHttpOverrides();
   SystemChrome.setSystemUIOverlayStyle(
@@ -84,16 +101,6 @@ FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
 final StreamController<String?> selectNotificationStream =
     StreamController<String?>.broadcast();
-
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   try {
-//     await Firebase.initializeApp();
-//     print('Handling a background message ${message.messageId}');
-//   } catch (e) {
-//     print('Exception - main.dart - _firebaseMessagingBackgroundHandler(): ' +
-//         e.toString());
-//   }
-// }
 
 //App info API call
 void hitAppInfo() async {
@@ -130,11 +137,15 @@ void hitAppInfo() async {
   });
 }
 
-class DeliveryBoyLogin extends StatelessWidget {
+class DeliveryBoyLogin extends StatefulWidget {
+  @override
+  _DeliveryBoyLoginState createState() => _DeliveryBoyLoginState();
+}
+
+class _DeliveryBoyLoginState extends State<DeliveryBoyLogin> {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   String navigationActionId = 'id_3';
 
@@ -173,188 +184,13 @@ class DeliveryBoyLogin extends StatelessWidget {
 
   @override
   void dispose() {
-    _stopSound();
-    dispose();
+    super.dispose();
   }
 
-  void _stopSound() {
-    player.stop();
-  }
 
   @override
   void initState() {
-    isShowAlert = true;
-    initState();
-    setFNotification();
-  }
-
-  @pragma('vm:entry-point')
-  void notificationTapBackground(NotificationResponse notificationResponse) {
-    // ignore: avoid_print
-    print('notification(${notificationResponse.id}) action tapped: '
-        '${notificationResponse.actionId} with'
-        ' payload: ${notificationResponse.payload}');
-    if (notificationResponse.input?.isNotEmpty ?? false) {
-      // ignore: avoid_print
-      print(
-          'notification action tapped with input: ${notificationResponse.input}');
-    }
-  }
-
-  //Set notification function
-  void setFNotification() async {
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    await flutterLocalNotificationsPlugin!
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
-    var initialzationSettingsAndroid =
-        AndroidInitializationSettings('ic_notification');
-    var initializationSettingsIOS = DarwinInitializationSettings();
-    var initializationSettings = InitializationSettings(
-      android: initialzationSettingsAndroid,
-      iOS: initializationSettingsIOS,
-    );
-    flutterLocalNotificationsPlugin!.initialize(initializationSettings);
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      try {
-        if (message != null && message.data != null) {
-          LocalNotification _notificationModel =
-              LocalNotification.fromJson(message.data);
-          localNotificationModel = _notificationModel;
-          isChatNotTapped = false;
-        }
-
-        if (message.notification != null) {
-          Future<String> _downloadAndSaveFile(
-              String url, String fileName) async {
-            final Directory directory =
-                await getApplicationDocumentsDirectory();
-            final String filePath = '${directory.path}/$fileName';
-            final http.Response response = await http.get(Uri.parse(url));
-            final File file = File(filePath);
-            await file.writeAsBytes(response.bodyBytes);
-            return filePath;
-          }
-
-          if (Platform.isAndroid) {
-            String bigPicturePath;
-            AndroidNotificationDetails androidPlatformChannelSpecifics;
-            if (message.notification!.android!.imageUrl != null &&
-                '${message.notification!.android!.imageUrl}' != 'N/A') {
-              print('in Image');
-              print('${message.notification!.android!.imageUrl}');
-              bigPicturePath = await _downloadAndSaveFile(
-                  message.notification!.android!.imageUrl != null
-                      ? message.notification!.android!.imageUrl!
-                      : 'https://picsum.photos/200/300',
-                  'bigPicture');
-              final BigPictureStyleInformation bigPictureStyleInformation =
-                  BigPictureStyleInformation(
-                FilePathAndroidBitmap(bigPicturePath),
-              );
-              // androidPlatformChannelSpecifics = AndroidNotificationDetails(
-              //     channel.id, channel.name,
-              //     channelDescription: channel.description,
-              //     icon: 'ic_notification',
-              //     styleInformation: bigPictureStyleInformation,
-              //     playSound: true);
-              androidPlatformChannelSpecifics = AndroidNotificationDetails(
-                  channel.id, channel.name,
-                  channelDescription: channel.description,
-                  // sound:
-                  //     RawResourceAndroidNotificationSound('audio/buzzer.mp3'),
-                  sound: RawResourceAndroidNotificationSound('buzzer'),
-                  icon: 'ic_notification',
-                  styleInformation: bigPictureStyleInformation,
-                  playSound: true);
-            } else {
-              print('in No Image');
-              // androidPlatformChannelSpecifics = AndroidNotificationDetails(
-              //     channel.id, channel.name,
-              //     channelDescription: channel.description,
-              //     icon: 'ic_notification',
-              //     styleInformation:
-              //         BigTextStyleInformation(message.notification!.body!),
-              //     playSound: true);
-              androidPlatformChannelSpecifics = AndroidNotificationDetails(
-                  channel.id, channel.name,
-                  channelDescription: channel.description,
-                  sound:
-                      RawResourceAndroidNotificationSound('audio/buzzer.mp3'),
-                  icon: 'ic_notification',
-                  styleInformation:
-                      BigTextStyleInformation(message.notification!.body!),
-                  playSound: true);
-            }
-            final NotificationDetails platformChannelSpecifics =
-                NotificationDetails(android: androidPlatformChannelSpecifics);
-            flutterLocalNotificationsPlugin!.show(
-                1,
-                message.notification!.title,
-                message.notification!.body,
-                platformChannelSpecifics);
-          } else if (Platform.isIOS) {
-            final String bigPicturePath = await _downloadAndSaveFile(
-                message.notification!.apple!.imageUrl != null
-                    ? message.notification!.apple!.imageUrl!
-                    : 'https://picsum.photos/200/300',
-                'bigPicture.jpg');
-            final DarwinNotificationDetails iOSPlatformChannelSpecifics =
-                DarwinNotificationDetails(
-                    attachments: <DarwinNotificationAttachment>[
-                  DarwinNotificationAttachment(bigPicturePath)
-                ],
-                    presentSound: true);
-            final DarwinNotificationDetails iOSPlatformChannelSpecifics2 =
-                DarwinNotificationDetails(presentSound: true);
-            final NotificationDetails notificationDetails = NotificationDetails(
-              iOS: message.notification!.apple!.imageUrl != null
-                  ? iOSPlatformChannelSpecifics
-                  : iOSPlatformChannelSpecifics2,
-            );
-            await flutterLocalNotificationsPlugin!.show(
-                1,
-                message.notification!.title,
-                message.notification!.body,
-                notificationDetails);
-          }
-          await flutterLocalNotificationsPlugin!.initialize(
-            initializationSettings,
-            onDidReceiveNotificationResponse:
-                (NotificationResponse notificationResponse) {
-              switch (notificationResponse.notificationResponseType) {
-                case NotificationResponseType.selectedNotification:
-                  selectNotificationStream.add(notificationResponse.payload);
-                  break;
-                case NotificationResponseType.selectedNotificationAction:
-                  if (notificationResponse.actionId == navigationActionId) {
-                    selectNotificationStream.add(notificationResponse.payload);
-                  }
-                  break;
-              }
-            },
-            onDidReceiveBackgroundNotificationResponse:
-                notificationTapBackground,
-          );
-        }
-      } catch (e) {
-        print('Exception - main.dart - onMessage.listen(): ' + e.toString());
-      }
-    });
-    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-    //   print("onMessageOpenedApp: $message");
-    //   Navigator.popAndPushNamed(
-    //       navigatorKey.currentState!.context, PageRoutes.notificationList);
-    // });
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-      print("onMessageOpenedApp: $message");
-
-      Navigator.popAndPushNamed(
-          navigatorKey.currentState!.context, PageRoutes.notificationList);
-      _stopSound();
-    });
+    super.initState();
   }
 }
 
@@ -409,7 +245,7 @@ class _DeliveryBoyHomeState extends State<DeliveryBoyHome> {
   @override
   void dispose() {
     _stopSound();
-    dispose();
+    super.dispose();
   }
 
   void _stopSound() {
@@ -456,7 +292,11 @@ class _DeliveryBoyHomeState extends State<DeliveryBoyHome> {
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
     const DarwinInitializationSettings iosSettings =
-        DarwinInitializationSettings();
+        DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+    );
 
     const InitializationSettings initSettings = InitializationSettings(
       android: androidSettings,
@@ -465,27 +305,28 @@ class _DeliveryBoyHomeState extends State<DeliveryBoyHome> {
 
     await flutterLocalNotificationsPlugin!.initialize(initSettings);
 
-    /// 🔥 FOREGROUND LISTENER
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      print("📩 MESSAGE RECEIVED");
+    print("LISTENER ATTACHED");
 
-      _handleForegroundMessage(message);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      print("📩 FOREGROUND PUSH RECEIVED");
+      print("TITLE => ${message.notification?.title}");
+      print("BODY => ${message.notification?.body}");
+
+      await _handleForegroundMessage(message);
     });
   }
+Future<void> _handleForegroundMessage(RemoteMessage message) async {
+  try {
+    print("✅ Notification Call");
 
-  Future<void> _handleForegroundMessage(RemoteMessage message) async {
-    try {
-      print("✅ Notification Call");
+    String title =
+        message.notification?.title ?? message.data['title'] ?? "Title";
 
-      String title =
-          message.notification?.title ?? message.data['title'] ?? "Title";
+    String body =
+        message.notification?.body ?? message.data['body'] ?? "Body";
 
-      String body =
-          message.notification?.body ?? message.data['body'] ?? "Body";
-
-      String payloadData = message.data.toString();
-
-      /// 🔔 Show notification (optional sound)
+    /// ✅ SHOW LOCAL NOTIFICATION ONLY FOR ANDROID
+    if (Platform.isAndroid) {
       await flutterLocalNotificationsPlugin!.show(
         1,
         title,
@@ -501,96 +342,111 @@ class _DeliveryBoyHomeState extends State<DeliveryBoyHome> {
             playSound: true,
             icon: '@mipmap/ic_launcher',
           ),
-          iOS: const DarwinNotificationDetails(),
         ),
-        payload: payloadData,
       );
-
-      /// 🚫 Prevent multiple dialogs
-      if (isDialogShowing) return;
-      isDialogShowing = true;
-
-      /// 🔥 Ensure UI is ready
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        final context = navigatorKey.currentState?.overlay?.context;
-
-        if (context != null) {
-          /// 🔊 PLAY SOUND ONLY ONCE
-          // await player.stop(); // safety
-          await player.setReleaseMode(ReleaseMode.loop);
-          await player.play(AssetSource('audio/buzzer.mp3'));
-
-          showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              backgroundColor: Colors.blue.shade900, // 🔵 dialog background
-
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-
-              title: Text(
-                title,
-                style: TextStyle(
-                  color: Colors.white, // ✅ title color
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-
-              content: Text(
-                body,
-                style: TextStyle(
-                  color: Colors.white70, // ✅ content text color
-                  fontSize: 15,
-                ),
-              ),
-
-              actions: [
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.orange, // 🟠 button background
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    /// 🔇 STOP SOUND
-                    player.stop();
-                    isDialogShowing = false;
-                    
-                     Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return ZapTodayOrder();
-                      })).then((value) {
-                        setState(() {
-                
-                        });
-                      });
-                  },
-                  child: const Text(
-                    "Go Order",
-                    style: TextStyle(
-                      color: Colors.white, // ✅ button text color
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          print("❌ Dialog context not available");
-          isDialogShowing = false;
-        }
-      });
-    } catch (e) {
-      print("❌ Error: $e");
-      isDialogShowing = false;
     }
+
+    /// 🚫 PREVENT MULTIPLE DIALOGS
+    if (isDialogShowing) return;
+
+    isDialogShowing = true;
+
+    /// ✅ SMALL DELAY FOR iOS UI READY
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    final context = navigatorKey.currentState?.overlay?.context;
+
+    print("Before dialog");
+    print("Context => $context");
+
+    if (context == null) {
+      print("❌ Context NULL");
+      isDialogShowing = false;
+      return;
+    }
+
+    /// 🔊 PLAY SOUND
+    await player.stop();
+    await player.setReleaseMode(ReleaseMode.loop);
+    await player.play(AssetSource('audio/buzzer.mp3'));
+
+    /// ✅ SHOW ALERT
+    await showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (_) => AlertDialog(
+        backgroundColor: Colors.blue.shade900,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        content: Text(
+          body,
+          style: const TextStyle(
+            color: Colors.white70,
+            fontSize: 15,
+          ),
+        ),
+        actions: [
+          TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.orange,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 10,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: () async {
+              Navigator.pop(context);
+
+              await player.stop();
+
+              isDialogShowing = false;
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ZapTodayOrder(),
+                ),
+              ).then((value) {
+                setState(() {});
+              });
+            },
+            child: const Text(
+              "Go Order",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    /// 🔇 STOP SOUND WHEN DIALOG CLOSED
+    await player.stop();
+
+    isDialogShowing = false;
+  } catch (e) {
+    print("❌ Error => $e");
+
+    await player.stop();
+
+    isDialogShowing = false;
   }
+}
+
 }
 
 class MyHttpOverrides extends HttpOverrides {

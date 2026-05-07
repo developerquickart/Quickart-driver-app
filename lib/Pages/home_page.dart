@@ -641,44 +641,45 @@ class _HomePageState extends State<HomePage>
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   width: 10,
-                  // ),
-                  // GestureDetector(
-                  //   onTap: () async{
-                  //     Navigator.push(context,
-                  //         MaterialPageRoute(builder: (context) {
-                  //       return ZapTodayOrder();
-                  //     })).then((value) {
-                  //       setState(() {
-                  //         getDrierStatus();
-                  //       });
-                  //     });
+                  SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () async{
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return ZapTodayOrder();
+                      })).then((value) {
+                        setState(() {
+                          getDrierStatus();
+                        });
+                      });
 
-                  //   },
-                  //   child: Container(
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.green,
-                  //       borderRadius: BorderRadius.circular(12), // ✅ radius added
-                  //     ),
-                  //     width: 170,
-                  //     padding: EdgeInsets.symmetric(
-                  //         horizontal:  10 , vertical: 12),
-                  //     child: Center(
-                  //       child: Container(
-                  //         padding: EdgeInsets.only(top: 5,bottom: 5),
-                  //         child: Text(
-                  //           'Go Orders',
-                  //           textAlign: TextAlign.center,
-                  //           style: TextStyle(
-                  //               fontSize: 16,
-                  //               color: kWhiteColor,
-                  //               letterSpacing: 0.6),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(12), // ✅ radius added
+                      ),
+                      width: 170,
+                      padding: EdgeInsets.symmetric(
+                          horizontal:  10 , vertical: 12),
+                      child: Center(
+                        child: Container(
+                          padding: EdgeInsets.only(top: 5,bottom: 5),
+                          child: Text(
+                            'Go Orders',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: kWhiteColor,
+                                letterSpacing: 0.6),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+               
                 ],
               ),
             ),
