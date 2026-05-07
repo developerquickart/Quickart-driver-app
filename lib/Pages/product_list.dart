@@ -113,7 +113,7 @@ class ProductListState extends State<ProductList> {
                                             width: 90,
                                             imageUrl:
                                                 '${orderDetails[index].varientImage}',
-                                            fit: BoxFit.fill,
+                                            fit: BoxFit.contain,
                                             progressIndicatorBuilder: (context,
                                                     url, downloadProgress) =>
                                                 Center(

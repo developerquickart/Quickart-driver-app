@@ -644,8 +644,7 @@ class _OrderAcceptedPageState extends State<OrderAcceptedPage> {
                                 'details': orderDetails,
                                 'OrderDetail': orderDetaials,
                                 "orderType": orderType
-                              }).then((value) {
-                   
+                              }).then((value) {         
                           });
         } else {
           Navigator.pop(context, 'Out For Delivery');

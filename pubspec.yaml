@@ -93,4 +93,7 @@ flutter:
             - asset: fonts/Poppins-Bold.ttf
   assets:
     - assets/
+    - assets/store.png
+    - assets/customer.png
+    - assets/driver.png
     - assets/audio/
