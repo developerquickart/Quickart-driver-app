@@ -3,9 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 // String imagebaseUrl1 = 'https://quickart.ae/admin/';
 //  String imagebaseUrl1 = 'https://quickart2.democheck.in/admin/';
 //  String imagebaseUrl1 = 'https://admin.quickart.ae/';
-//  String imagebaseUrl1 = 'https://demoadmin.quickart.ae/';
+ String imagebaseUrl1 = 'https://demoadmin.quickart.ae/';
 //Go orders...G1
-String imagebaseUrl1 = 'https://zap-admin-production.up.railway.app/';
+// String imagebaseUrl1 = 'https://zap-admin-production.up.railway.app/';
 String zaporderBaseURL = 'https://zap-admin-production.up.railway.app/api/';
 
 var dBoyLat;

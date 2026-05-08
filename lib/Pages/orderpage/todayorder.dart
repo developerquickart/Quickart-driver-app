@@ -77,9 +77,10 @@ class _TodayOrderState extends State<TodayOrder> {
       });
     }
     print(ordersfortodayUri);
-    print("dboy_id: ${prefs.getInt('db_id')}");
+    print("dboy_id: ${prefs.getInt('db_id')}, 'status': $status");
     http.post(ordersfortodayUri,
-        body: {'dboy_id': '${prefs.getInt('db_id')}'}).then((value) {
+        body: {'dboy_id': '${prefs.getInt('db_id')}', 'status': "$status"}).then((value) {
+          print("order for today: ${value.body}");
       if (value.statusCode == 200) {
         if ('${value.body}' != '\n[{\"order_details\":\"no orders found\"}]') {
           var jsD = jsonDecode(value.body) as List;
@@ -285,10 +286,11 @@ class _TodayOrderState extends State<TodayOrder> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            orderStatusSorting(1);
+                            // orderStatusSorting(1);
                             setState(() {
                               status = 1;
                             });
+                              getOrderList();
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Padding(
@@ -327,11 +329,12 @@ class _TodayOrderState extends State<TodayOrder> {
                       Expanded(
                           child: GestureDetector(
                         onTap: () {
-                          orderStatusSorting(2);
+                          // orderStatusSorting(2);
                           setState(() {
                             status = 2;
                             isSelectAllVisible = false;
                           });
+                            getOrderList();
                         },
                         behavior: HitTestBehavior.opaque,
                         child: Padding(
@@ -369,11 +372,12 @@ class _TodayOrderState extends State<TodayOrder> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            orderStatusSorting(3);
+                            // orderStatusSorting(3);
                             setState(() {
                               status = 3;
                               isSelectAllVisible = false;
                             });
+                              getOrderList();
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Padding(
@@ -412,11 +416,12 @@ class _TodayOrderState extends State<TodayOrder> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            orderStatusSorting(4);
+                            // orderStatusSorting(4);
                             setState(() {
                               status = 4;
                               isSelectAllVisible = false;
                             });
+                              getOrderList();
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Padding(
