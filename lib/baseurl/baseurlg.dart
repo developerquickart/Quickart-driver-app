@@ -2,8 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // String imagebaseUrl1 = 'https://quickart.ae/admin/';
 //  String imagebaseUrl1 = 'https://quickart2.democheck.in/admin/';
-//  String imagebaseUrl1 = 'https://admin.quickart.ae/';
- String imagebaseUrl1 = 'https://demoadmin.quickart.ae/';
+ String imagebaseUrl1 = 'https://admin.quickart.ae/';
+//  String imagebaseUrl1 = 'https://demoadmin.quickart.ae/';
 //Go orders...G1
 // String imagebaseUrl1 = 'https://zap-admin-production.up.railway.app/';
 String zaporderBaseURL = 'https://zap-admin-production.up.railway.app/api/';
@@ -28,8 +28,7 @@ var cityUri = Uri.parse('${apibaseUrl}city');
 var appInfoUri = Uri.parse('${apibaseUrl}app_info');
 var appTermsUri = Uri.parse('${apibaseUrl}appterms');
 var loginUrl = Uri.parse('${dirverBaseUrl}driver_login');
-var driverCallbackReqUrl = Uri.parse('${dirverBaseUrl}driver_callback_req');
-var driverFeedbackUrl = Uri.parse('${dirverBaseUrl}driver_feedback');
+var driverCallbackReqUrl = Uri.parse('${dirverBaseUrl}driver_callback_req');var driverFeedbackUrl = Uri.parse('${dirverBaseUrl}driver_feedback');
 var completedOrdersUrl = Uri.parse('${dirverBaseUrl}completed_orders');
 var appAboutusUri = Uri.parse('${apibaseUrl}appaboutus');
 var driverNotificationUri = Uri.parse(
@@ -39,7 +38,8 @@ var driverDeleteAllNotificationUri = Uri.parse(
   '${dirverBaseUrl}driver_delete_all_notification',
 );
 var updateStatusUri = Uri.parse('${dirverBaseUrl}update_status');
-var ordersfortodayUri = Uri.parse('${dirverBaseUrl}ordersfortoday');
+var ordersfortodayUri1 = Uri.parse('${dirverBaseUrl}ordersfortoday');
+var ordersfortodayUri = dirverBaseUrl.toString().contains('https://admin.quickart.ae/') ? Uri.parse('https://ckxrmeapgvkllpxjgheg.supabase.co/functions/v1/ordersfortoday') : Uri.parse('https://kqnbbiyijarwsoymqtup.supabase.co/functions/v1/ordersfortoday');
 var ordersfornextdayUri = Uri.parse('${dirverBaseUrl}ordersfornextday');
 var outForDeliveryUri = Uri.parse('${dirverBaseUrl}out_for_delivery');
 var deliveryCompletedUri = Uri.parse('${dirverBaseUrl}delivery_completed');

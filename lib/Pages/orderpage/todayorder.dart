@@ -42,7 +42,7 @@ class _TodayOrderState extends State<TodayOrder> {
     super.initState();
     getCurrentLocation();
     getOrderList();
-    getOrderCancellationReasons();
+    // getOrderCancellationReasons();
   }
 
   //Get current location function
@@ -78,9 +78,16 @@ class _TodayOrderState extends State<TodayOrder> {
     }
     print(ordersfortodayUri);
     print("dboy_id: ${prefs.getInt('db_id')}, 'status': $status");
-    http.post(ordersfortodayUri,
-        body: {'dboy_id': '${prefs.getInt('db_id')}', 'status': "$status"}).then((value) {
-          print("order for today: ${value.body}");
+    http
+        .post(
+      ordersfortodayUri,
+      body: jsonEncode({
+        "dboy_id": prefs.getInt('db_id'),
+        "status": status,
+      }),
+    )
+        .then((value) {
+      print("order for today: ${value.body}");
       if (value.statusCode == 200) {
         if ('${value.body}' != '\n[{\"order_details\":\"no orders found\"}]') {
           var jsD = jsonDecode(value.body) as List;
@@ -198,42 +205,43 @@ class _TodayOrderState extends State<TodayOrder> {
   void orderStatusSorting(int selectedBtn) {
     newOrders.clear();
     for (var i = 0; i < newOrdersSort.length; i++) {
+      newOrders.add(newOrdersSort[i]);
       if (selectedBtn == 1) {
-        if ('${newOrdersSort[i].orderStatus}'.toLowerCase() == 'pending' ||
-            '${newOrdersSort[i].orderStatus}'.toLowerCase() == 'accepted' ||
-            '${newOrdersSort[i].orderStatus}'.toUpperCase() == 'CONFIRMED' ||
-            '${newOrdersSort[i].orderStatus}' == 'Confirmed') {
-          newOrders.add(newOrdersSort[i]);
-        }
+        // if ('${newOrdersSort[i].orderStatus}'.toLowerCase() == 'pending' ||
+        //     '${newOrdersSort[i].orderStatus}'.toLowerCase() == 'accepted' ||
+        //     '${newOrdersSort[i].orderStatus}'.toUpperCase() == 'CONFIRMED' ||
+        //     '${newOrdersSort[i].orderStatus}' == 'Confirmed') {
+        //   newOrders.add(newOrdersSort[i]);
+        // }
         btnPendingSelected = true;
         btnOutForDeliverySelected = false;
         btnCompletedSelected = false;
         btnCancelledSelected = false;
       } else if (selectedBtn == 2) {
-        if ('${newOrdersSort[i].orderStatus}'.toUpperCase() ==
-            'OUT FOR DELIVERY') {
-          newOrders.add(newOrdersSort[i]);
-          isSelectAllVisible = false;
-        }
+        // if ('${newOrdersSort[i].orderStatus}'.toUpperCase() ==
+        //     'OUT FOR DELIVERY') {
+        //   newOrders.add(newOrdersSort[i]);
+        isSelectAllVisible = false;
+        // }
         btnPendingSelected = false;
         btnOutForDeliverySelected = true;
         btnCompletedSelected = false;
         btnCancelledSelected = false;
       } else if (selectedBtn == 3) {
-        if ('${newOrdersSort[i].orderStatus}'.toLowerCase() ==
-            'Completed'.toLowerCase()) {
-          newOrders.add(newOrdersSort[i]);
-          isSelectAllVisible = false;
-        }
+        // if ('${newOrdersSort[i].orderStatus}'.toLowerCase() ==
+        //     'Completed'.toLowerCase()) {
+        //   newOrders.add(newOrdersSort[i]);
+        isSelectAllVisible = false;
+        // }
         btnPendingSelected = false;
         btnOutForDeliverySelected = false;
         btnCompletedSelected = true;
         btnCancelledSelected = false;
       } else if (selectedBtn == 4) {
-        if ('${newOrdersSort[i].orderStatus}' == 'Cancelled') {
-          newOrders.add(newOrdersSort[i]);
-          isSelectAllVisible = false;
-        }
+        // if ('${newOrdersSort[i].orderStatus}' == 'Cancelled') {
+        //   newOrders.add(newOrdersSort[i]);
+        isSelectAllVisible = false;
+        // }
         btnPendingSelected = false;
         btnOutForDeliverySelected = false;
         btnCompletedSelected = false;
@@ -244,6 +252,7 @@ class _TodayOrderState extends State<TodayOrder> {
         isSelectAllVisible = true;
       }
     }
+
     if (!pageDestroy) {
       setState(() {
         isLoading = false;
@@ -290,7 +299,7 @@ class _TodayOrderState extends State<TodayOrder> {
                             setState(() {
                               status = 1;
                             });
-                              getOrderList();
+                            getOrderList();
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Padding(
@@ -334,7 +343,7 @@ class _TodayOrderState extends State<TodayOrder> {
                             status = 2;
                             isSelectAllVisible = false;
                           });
-                            getOrderList();
+                          getOrderList();
                         },
                         behavior: HitTestBehavior.opaque,
                         child: Padding(
@@ -377,7 +386,7 @@ class _TodayOrderState extends State<TodayOrder> {
                               status = 3;
                               isSelectAllVisible = false;
                             });
-                              getOrderList();
+                            getOrderList();
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Padding(
@@ -421,7 +430,7 @@ class _TodayOrderState extends State<TodayOrder> {
                               status = 4;
                               isSelectAllVisible = false;
                             });
-                              getOrderList();
+                            getOrderList();
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Padding(
@@ -609,7 +618,7 @@ class _TodayOrderState extends State<TodayOrder> {
           //     arguments: {'OrderDetail': mainP}).then((value) {
           //   getOrderList();
           // });
-           Navigator.pushNamed(context, PageRoutes.orderAcceptedPage,
+          Navigator.pushNamed(context, PageRoutes.orderAcceptedPage,
               arguments: {
                 'details': mainP.items,
                 'OrderDetail': mainP,
