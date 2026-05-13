@@ -78,9 +78,16 @@ class _ZapTodayOrderState extends State<ZapTodayOrder> {
       });
     }
     print(zapOrdersfortodayUri);
-    print("---------dboy_id: ${prefs.getInt('db_id')}");
-    http.post(zapOrdersfortodayUri,
-        body: {'dboy_id': '${prefs.getInt('db_id')}'}).then((value) {
+    print("---------dboy_id: ${prefs.getInt('db_id')}, status: $status");
+    http
+        .post(
+      zapOrdersfortodayUri,
+      body: jsonEncode({
+        "dboy_id": prefs.getInt('db_id'),
+        "status": status,
+      }),
+    )
+        .then((value) {
       if (value.statusCode == 200) {
         if ('${value.body}' != '\n[{\"order_details\":\"no orders found\"}]') {
           var jsD = jsonDecode(value.body) as List;
@@ -198,42 +205,43 @@ class _ZapTodayOrderState extends State<ZapTodayOrder> {
   void orderStatusSorting(int selectedBtn) {
     newOrders.clear();
     for (var i = 0; i < newOrdersSort.length; i++) {
+      newOrders.add(newOrdersSort[i]);
       if (selectedBtn == 1) {
-        if ('${newOrdersSort[i].orderStatus}'.toLowerCase() == 'pending' ||
-            '${newOrdersSort[i].orderStatus}'.toLowerCase() == 'accepted' ||
-            '${newOrdersSort[i].orderStatus}'.toUpperCase() == 'CONFIRMED' ||
-            '${newOrdersSort[i].orderStatus}' == 'Confirmed') {
-          newOrders.add(newOrdersSort[i]);
-        }
+        // if ('${newOrdersSort[i].orderStatus}'.toLowerCase() == 'pending' ||
+        //     '${newOrdersSort[i].orderStatus}'.toLowerCase() == 'accepted' ||
+        //     '${newOrdersSort[i].orderStatus}'.toUpperCase() == 'CONFIRMED' ||
+        //     '${newOrdersSort[i].orderStatus}' == 'Confirmed') {
+        //   newOrders.add(newOrdersSort[i]);
+        // }
         btnPendingSelected = true;
         btnOutForDeliverySelected = false;
         btnCompletedSelected = false;
         btnCancelledSelected = false;
       } else if (selectedBtn == 2) {
-        if ('${newOrdersSort[i].orderStatus}'.toUpperCase() ==
-            'OUT FOR DELIVERY') {
-          newOrders.add(newOrdersSort[i]);
-          isSelectAllVisible = false;
-        }
+        // if ('${newOrdersSort[i].orderStatus}'.toUpperCase() ==
+        //     'OUT FOR DELIVERY') {
+        //   newOrders.add(newOrdersSort[i]);
+        isSelectAllVisible = false;
+        // }
         btnPendingSelected = false;
         btnOutForDeliverySelected = true;
         btnCompletedSelected = false;
         btnCancelledSelected = false;
       } else if (selectedBtn == 3) {
-        if ('${newOrdersSort[i].orderStatus}'.toLowerCase() ==
-            'Completed'.toLowerCase()) {
-          newOrders.add(newOrdersSort[i]);
-          isSelectAllVisible = false;
-        }
+        // if ('${newOrdersSort[i].orderStatus}'.toLowerCase() ==
+        //     'Completed'.toLowerCase()) {
+        //   newOrders.add(newOrdersSort[i]);
+        isSelectAllVisible = false;
+        // }
         btnPendingSelected = false;
         btnOutForDeliverySelected = false;
         btnCompletedSelected = true;
         btnCancelledSelected = false;
       } else if (selectedBtn == 4) {
-        if ('${newOrdersSort[i].orderStatus}' == 'Cancelled') {
-          newOrders.add(newOrdersSort[i]);
-          isSelectAllVisible = false;
-        }
+        // if ('${newOrdersSort[i].orderStatus}' == 'Cancelled') {
+        //   newOrders.add(newOrdersSort[i]);
+        isSelectAllVisible = false;
+        // }
         btnPendingSelected = false;
         btnOutForDeliverySelected = false;
         btnCompletedSelected = false;
@@ -286,10 +294,11 @@ class _ZapTodayOrderState extends State<ZapTodayOrder> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            orderStatusSorting(1);
+                            // orderStatusSorting(1);
                             setState(() {
                               status = 1;
                             });
+                            getOrderList();
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Padding(
@@ -328,11 +337,12 @@ class _ZapTodayOrderState extends State<ZapTodayOrder> {
                       Expanded(
                           child: GestureDetector(
                         onTap: () {
-                          orderStatusSorting(2);
+                          // orderStatusSorting(2);
                           setState(() {
                             status = 2;
                             isSelectAllVisible = false;
                           });
+                          getOrderList();
                         },
                         behavior: HitTestBehavior.opaque,
                         child: Padding(
@@ -370,11 +380,12 @@ class _ZapTodayOrderState extends State<ZapTodayOrder> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            orderStatusSorting(3);
+                            // orderStatusSorting(3);
                             setState(() {
                               status = 3;
                               isSelectAllVisible = false;
                             });
+                            getOrderList();
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Padding(
@@ -413,11 +424,12 @@ class _ZapTodayOrderState extends State<ZapTodayOrder> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            orderStatusSorting(4);
+                            // orderStatusSorting(4);
                             setState(() {
                               status = 4;
                               isSelectAllVisible = false;
                             });
+                            getOrderList();
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Padding(
@@ -1127,7 +1139,9 @@ class _ZapTodayOrderState extends State<ZapTodayOrder> {
                       )
                     : SizedBox.shrink(),
                 SizedBox(height: 8),
-                (mainP.items != null && mainP.items!.length > 0 && mainP.timeSlot != null)
+                (mainP.items != null &&
+                        mainP.items!.length > 0 &&
+                        mainP.timeSlot != null && mainP.timeSlot != "null")
                     ? Row(
                         children: [
                           Text("Delivery Time Slot: ",

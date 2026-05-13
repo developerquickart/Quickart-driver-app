@@ -60,7 +60,7 @@ var cancelitemlist = Uri.parse('${apibaseUrl}cancelitemlist');
 
 
 // Zap orders apis
-var zapOrdersfortodayUri = Uri.parse('${zaporderBaseURL}zapordersfortoday');
+var zapOrdersfortodayUri = Uri.parse('https://lwjwrnpfftdevebgvcmz.supabase.co/functions/v1/go_ordersfortoday');
 var zapCancelitemlist = Uri.parse('${zaporderBaseURL}cancelitemlist');
 var zapCancellationReasons = Uri.parse('${zaporderBaseURL}cancelorderreason');
 var zapOutForDeliveryUri = Uri.parse('${zaporderBaseURL}out_for_delivery');

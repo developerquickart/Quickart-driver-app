@@ -572,113 +572,113 @@ class _HomePageState extends State<HomePage>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Navigator.push(context,
+                  //         MaterialPageRoute(builder: (context) {
+                  //       return TodayOrder();
+                  //     })).then((value) {
+                  //       setState(() {
+                  //         getDrierStatus();
+                  //       });
+                  //     });
+                  //   },
+                  //   behavior: HitTestBehavior.opaque,
+                  //   child: Container(
+                  //     width: 170,
+                  //     padding: EdgeInsets.symmetric(
+                  //         horizontal: totalOrder > 10 ? 10 : 10, vertical: 12),
+                  //     decoration: BoxDecoration(
+                  //       color: kPurpleLight,
+                  //       borderRadius:
+                  //           BorderRadius.circular(12), // ✅ radius added
+                  //     ),
+                  //     child: Stack(
+                  //       children: [
+                  //         totalOrder != 0
+                  //             ? Positioned(
+                  //                 right: 0,
+                  //                 top: 0,
+                  //                 child: Container(
+                  //                   padding: EdgeInsets.symmetric(
+                  //                       horizontal: 6, vertical: 2),
+                  //                   decoration: BoxDecoration(
+                  //                     color: Colors.green,
+                  //                     borderRadius: BorderRadius.circular(10),
+                  //                   ),
+                  //                   constraints: BoxConstraints(
+                  //                     minWidth: 18,
+                  //                     minHeight: 18,
+                  //                   ),
+                  //                   child: Text(
+                  //                     totalOrder <= 99
+                  //                         ? '${totalOrder}'
+                  //                         : "99+",
+                  //                     style: TextStyle(
+                  //                       color: Colors.white,
+                  //                       fontSize: 12,
+                  //                       fontWeight: FontWeight.w600,
+                  //                     ),
+                  //                     textAlign: TextAlign.center,
+                  //                   ),
+                  //                 ),
+                  //               )
+                  //             : new SizedBox(),
+                  //         Center(
+                  //           child: Container(
+                  //             padding: EdgeInsets.only(top: 8),
+                  //             child: Text(
+                  //               todayOrder,
+                  //               textAlign: TextAlign.center,
+                  //               style: TextStyle(
+                  //                   fontSize: 16,
+                  //                   color: kWhiteColor,
+                  //                   letterSpacing: 0.6),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   width: 10,
+                  // ),
+                 
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async{
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return TodayOrder();
+                        return ZapTodayOrder();
                       })).then((value) {
                         setState(() {
                           getDrierStatus();
                         });
                       });
                     },
-                    behavior: HitTestBehavior.opaque,
                     child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(12), // ✅ radius added
+                      ),
                       width: 170,
                       padding: EdgeInsets.symmetric(
-                          horizontal: totalOrder > 10 ? 10 : 10, vertical: 12),
-                      decoration: BoxDecoration(
-                        color: kPurpleLight,
-                        borderRadius:
-                            BorderRadius.circular(12), // ✅ radius added
-                      ),
-                      child: Stack(
-                        children: [
-                          totalOrder != 0
-                              ? Positioned(
-                                  right: 0,
-                                  top: 0,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 6, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    constraints: BoxConstraints(
-                                      minWidth: 18,
-                                      minHeight: 18,
-                                    ),
-                                    child: Text(
-                                      totalOrder <= 99
-                                          ? '${totalOrder}'
-                                          : "99+",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                )
-                              : new SizedBox(),
-                          Center(
-                            child: Container(
-                              padding: EdgeInsets.only(top: 8),
-                              child: Text(
-                                todayOrder,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: kWhiteColor,
-                                    letterSpacing: 0.6),
-                              ),
-                            ),
+                          horizontal:  10 , vertical: 12),
+                      child: Center(
+                        child: Container(
+                          padding: EdgeInsets.only(top: 5,bottom: 5),
+                          child: Text(
+                            'Go Orders',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: kWhiteColor,
+                                letterSpacing: 0.6),
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   width: 10,
-                  // ),
-                  // GestureDetector(
-                  //   onTap: () async{
-                  //     Navigator.push(context,
-                  //         MaterialPageRoute(builder: (context) {
-                  //       return ZapTodayOrder();
-                  //     })).then((value) {
-                  //       setState(() {
-                  //         getDrierStatus();
-                  //       });
-                  //     });
-
-                  //   },
-                  //   child: Container(
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.green,
-                  //       borderRadius: BorderRadius.circular(12), // ✅ radius added
-                  //     ),
-                  //     width: 170,
-                  //     padding: EdgeInsets.symmetric(
-                  //         horizontal:  10 , vertical: 12),
-                  //     child: Center(
-                  //       child: Container(
-                  //         padding: EdgeInsets.only(top: 5,bottom: 5),
-                  //         child: Text(
-                  //           'Go Orders',
-                  //           textAlign: TextAlign.center,
-                  //           style: TextStyle(
-                  //               fontSize: 16,
-                  //               color: kWhiteColor,
-                  //               letterSpacing: 0.6),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                
                 ],
               ),

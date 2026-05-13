@@ -89,7 +89,6 @@ class ProductListState extends State<ProductList> {
                           shrinkWrap: true,
                           physics: BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            print("G1---varientImage---> ${orderDetails[index].varientImage}");
                             return Padding(
                               padding: EdgeInsets.all(1),
                               child: Card(

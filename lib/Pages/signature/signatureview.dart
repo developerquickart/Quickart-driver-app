@@ -1113,9 +1113,10 @@ class SignatureViewState extends State<SignatureView> {
           },
         ),
       );
-
+      print("G1---response-->$response");
       // Handle API response
       if (response.data != null && response.data['status'] == '1') {
+         print("G1---response-->$response");
         distance = '${response.data['distance']}';
         setState(() {
           isLoading = false;
